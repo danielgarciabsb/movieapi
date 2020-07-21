@@ -1,21 +1,18 @@
 import React, {Component} from 'react';
-import api from './api';
-import trending from './trending';
+import api from '../apis/api';
+import trending from '../apis/trending';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Filme from './Filme'
-import FilmeGenre from './FilmeGenre'
-import genres from "./genres";
+import Genre from "./Genre";
 
 class App extends Component {
 
   state = {
     filmes: [],
     trending: [],
-    genres: [],
-    withgenres: new Map(),
-    txt_busca: 'titanic'
+    txt_busca: 'psycho'
   };
 
   constructor(props) {
@@ -28,9 +25,7 @@ class App extends Component {
   async componentDidMount() {
     this.response = await api.get(this.state.txt_busca);
     this.trending = await trending.get();
-    this.genres = await genres.get();
 
-    this.setState({ genres: this.genres.data.genres });
     this.setState({ filmes: this.response.data.results });
     this.setState({ trending: this.trending.data.results });
 
@@ -69,7 +64,7 @@ class App extends Component {
           </Jumbotron>
           <Jumbotron>
             <h1 className="header">Popular</h1>
-            <FilmeGenre genres={this.state.genres} />
+            <Genre />
           </Jumbotron>
         </Container>
 
